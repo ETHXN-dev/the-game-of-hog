@@ -23,6 +23,19 @@ def roll_dice(num_rolls, dice=six_sided):
     assert type(num_rolls) == int, "num_rolls must be an integer."
     assert num_rolls > 0, "Must roll at least once."
     "*** YOUR CODE HERE ***"
+    total_outcomes = 0
+    is_one_rolled = False
+
+    for _ in range(num_rolls):
+        roll_value = dice()
+        if roll_value == 1:
+            is_one_rolled = True
+        total_outcomes += roll_value
+
+    if is_one_rolled:
+        return 1
+
+    return total_outcomes
 
 
 def take_turn(num_rolls, opponent_score, dice=six_sided):
