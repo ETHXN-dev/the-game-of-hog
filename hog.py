@@ -209,6 +209,15 @@ def max_scoring_num_rolls(dice=six_sided):
     10
     """
     "*** YOUR CODE HERE ***"
+    averaged_roll_dice = make_averaged(roll_dice)
+    highest, highest_dice = 0, 0
+    for n in range(1, 11):
+        average_turn_score = averaged_roll_dice(n, dice)
+        print(n, "dice scores", average_turn_score, "on average")
+        if average_turn_score > highest:
+            highest, highest_dice = average_turn_score, n
+
+    return highest_dice
 
 
 def winner(strategy0, strategy1):
