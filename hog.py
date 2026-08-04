@@ -274,7 +274,9 @@ def bacon_strategy(score, opponent_score):
     0
     """
     "*** YOUR CODE HERE ***"
-    return 5  # Replace this statement
+    if (max(opponent_score // 10, opponent_score % 10) + 1) >= BACON_MARGIN:
+        return 0
+    return BASELINE_NUM_ROLLS
 
 
 def swap_strategy(score, opponent_score):
