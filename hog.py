@@ -295,7 +295,17 @@ def swap_strategy(score, opponent_score):
     5
     """
     "*** YOUR CODE HERE ***"
-    return 5  # Replace this statement
+    points_from_0 = max(opponent_score // 10, opponent_score % 10) + 1
+    new_score = score + points_from_0
+
+    if new_score == opponent_score / 2:
+        return 0
+    if new_score == opponent_score * 2:
+        return BASELINE_NUM_ROLLS
+    if points_from_0 >= BACON_MARGIN:
+        return 0
+
+    return BASELINE_NUM_ROLLS
 
 
 def final_strategy(score, opponent_score):
