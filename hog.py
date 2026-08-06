@@ -309,12 +309,44 @@ def swap_strategy(score, opponent_score):
 
 
 def final_strategy(score, opponent_score):
-    """Write a brief description of your final strategy.
+    """Compute the number of dice to roll for the current turn.
 
-    *** YOUR DESCRIPTION HERE ***
+    Uses free bacon and swap awareness to gain an edge over the baseline
+    strategy:
+
+    - If taking free bacon (rolling 0) would trigger a beneficial swap
+      (bringing our score to exactly half the opponent's), we take it.
+    - If taking free bacon would leave the combined score a multiple of 7,
+      we take it, since this forces the opponent onto four-sided dice on
+      their next turn.
+    - While behind or tied, we only take free bacon outright when it meets
+      BACON_MARGIN; we're additionally more willing to grab a smaller
+      amount of bacon if it means avoiding a roll on four-sided dice,
+      which carry a higher pig-out risk than six-sided dice.
+    - While ahead, we avoid rolling 0 if it would cause a harmful swap
+      (doubling the opponent's score at our expense). Otherwise we take
+      free bacon once it clears BACON_MARGIN.
+    - In all other cases, we roll BASELINE_NUM_ROLLS dice.
     """
     "*** YOUR CODE HERE ***"
-    return 5  # Replace this statement
+    points_from_0 = max(opponent_score // 10, opponent_score % 10) + 1
+    new_score = score + points_from_0
+
+    is_beneficial_swap = new_score == opponent_score / 2
+    is_harmful_swap = new_score == opponent_score * 2
+    forces_opponent_onto_four_sided = (new_score + opponent_score) % 7 == 0
+    would_roll_four_sided = select_dice(score, opponent_score) == four_sided
+
+    if score <= opponent_score:
+        if is_beneficial_swap or forces_opponent_onto_four_sided:
+            return 0
+        if would_roll_four_sided and points_from_0 >= BACON_MARGIN:
+            return 0
+    else:
+        if not is_harmful_swap and points_from_0 >= BACON_MARGIN:
+            return 0
+
+    return BASELINE_NUM_ROLLS
 
 
 ##########################
